@@ -1,0 +1,59 @@
+<?php
+
+function linearSearch($arr, $target) {
+    foreach ($arr as $element) {
+        if ($element == $target) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+$arr = range(1, 100000);
+shuffle($arr);
+$arr = array_slice($arr, 0, 10000);
+sort($arr);
+
+
+$target = $arr[array_rand($arr)];
+
+
+$start_time = microtime(true);
+$result = linearSearch($arr, $target);
+$end_time = microtime(true);
+
+echo "Lineair zoeken: Getal $target gevonden: " . ($result ? "True" : "False") . "\n";
+echo "Tijd: " . number_format($end_time - $start_time, 6) . " seconden\n\n";
+
+
+function binarySearch($arr, $target, $low, $high) {
+    if ($low > $high) {
+        return false;
+    }
+    $mid = floor(($low + $high) / 2);
+    if ($arr[$mid] == $target) {
+        return true;
+    } elseif ($arr[$mid] > $target) {
+        return binarySearch($arr, $target, $low, $mid - 1);
+    } else {
+        return binarySearch($arr, $target, $mid + 1, $high);
+    }
+}
+
+
+$arr = range(1, 100000);
+shuffle($arr);
+$arr = array_slice($arr, 0, 10000);
+sort($arr);
+
+
+$target = $arr[array_rand($arr)];
+
+
+$start_time = microtime(true);
+$result = binarySearch($arr, $target, 0, count($arr) - 1);
+$end_time = microtime(true);
+
+echo "Binair zoeken: Getal $target gevonden: " . ($result ? "True" : "False") . "\n";
+echo "Tijd: " . number_format($end_time - $start_time, 6) . " seconden\n";
