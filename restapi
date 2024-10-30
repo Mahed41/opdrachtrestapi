@@ -3,7 +3,8 @@
 $url = "https://nominatim.openstreetmap.org/search?format=json&q=Roermond";
 $options = [
     'http' => [
-        'header' => "Accept: application/json\r\n"
+        'header' => "Accept: application/json\r\n" .
+                    "User-Agent: MyCustomAgent/1.0 (your_email@example.com)\r\n" // Add User-Agent
     ]
 ];
 $context = stream_context_create($options);
@@ -12,12 +13,10 @@ $response = file_get_contents($url, false, $context);
 if ($response !== false) {
     $data = json_decode($response, true);
     
-  
     if (!empty($data)) {
         $lat = floatval($data[0]['lat']);
         $lon = floatval($data[0]['lon']);
         
- 
         $html = <<<HTML
 <!DOCTYPE html>
 <html lang="nl">
@@ -47,7 +46,6 @@ if ($response !== false) {
 </html>
 HTML;
 
-        
         file_put_contents('roermond_map.html', $html);
         echo "Kaart is opgeslagen als roermond_map.html";
     } else {
@@ -56,4 +54,3 @@ HTML;
 } else {
     echo "Fout bij het ophalen van gegevens";
 }
-?>
